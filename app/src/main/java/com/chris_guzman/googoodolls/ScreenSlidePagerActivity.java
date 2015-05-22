@@ -9,6 +9,10 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -21,10 +25,13 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
 
     private PagerAdapter mPagerAdapter;
 
+    private Button nextStep;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_slide);
+        nextStep = (Button) findViewById(R.id.nextStep);
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -55,6 +62,51 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        hideForm();
+    }
+
+    public void createAccount(View view) {
+        showForm();
+        nextStep.setText("Sign Up");
+    }
+
+    public void logIn(View view) {
+        showForm();
+        nextStep.setText("Log In");
+    }
+
+    private void showForm() {
+        Button logIn = (Button) findViewById(R.id.login);
+        Button account = (Button) findViewById(R.id.account);
+        TextView guest = (TextView) findViewById(R.id.guest);
+        EditText email = (EditText) findViewById(R.id.email);
+        EditText password = (EditText) findViewById(R.id.password);
+
+        logIn.setVisibility(View.GONE);
+        account.setVisibility(View.GONE);
+        guest.setVisibility(View.GONE);
+        email.setVisibility(View.VISIBLE);
+        password.setVisibility(View.VISIBLE);
+        nextStep.setVisibility(View.VISIBLE);
+    }
+
+    private void hideForm() {
+        Button logIn = (Button) findViewById(R.id.login);
+        Button account = (Button) findViewById(R.id.account);
+        TextView guest = (TextView) findViewById(R.id.guest);
+        EditText email = (EditText) findViewById(R.id.email);
+        EditText password = (EditText) findViewById(R.id.password);
+
+        logIn.setVisibility(View.VISIBLE);
+        account.setVisibility(View.VISIBLE);
+        guest.setVisibility(View.VISIBLE);
+        email.setVisibility(View.GONE);
+        password.setVisibility(View.GONE);
+        nextStep.setVisibility(View.GONE);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
