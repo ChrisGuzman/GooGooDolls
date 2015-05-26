@@ -27,6 +27,11 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
 
     private Button nextStep;
 
+    private boolean backPressedTwice;
+
+    private boolean inForm;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +44,14 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
 
         CirclePageIndicator titlePageIndicator = (CirclePageIndicator)findViewById(R.id.titles);
         titlePageIndicator.setViewPager(mPager);
+        inForm = false;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        backPressedTwice = false;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,7 +77,13 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        hideForm();
+        if (inForm && !backPressedTwice) {
+            hideForm();
+        }
+        else {
+            super.onBackPressed();
+        }
+        backPressedTwice = true;
     }
 
     public void createAccount(View view) {
@@ -92,6 +109,7 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         email.setVisibility(View.VISIBLE);
         password.setVisibility(View.VISIBLE);
         nextStep.setVisibility(View.VISIBLE);
+        inForm = true;
     }
 
     private void hideForm() {
@@ -107,6 +125,7 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         email.setVisibility(View.GONE);
         password.setVisibility(View.GONE);
         nextStep.setVisibility(View.GONE);
+        inForm = false;
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
